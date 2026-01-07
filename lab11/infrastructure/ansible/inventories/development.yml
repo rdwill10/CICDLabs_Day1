@@ -1,0 +1,10 @@
+---
+all:
+  hosts:
+    localhost:
+      ansible_connection: local
+      ansible_python_interpreter: /usr/bin/python3
+  vars:
+    app_port: 5000
+    image_ref: "ghcr.io/<YOUR_USER>/capstone-cicd/capstone-flask:latest"
+    ghcr_private: false  # set true if your GHCR package is private

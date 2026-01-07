@@ -1,0 +1,46 @@
+name: DevOps Capstone - Deployment
+
+on:
+  workflow_run:
+    workflows: ["DevOps Capstone - Continuous Integration"]
+    types: [completed]
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      ghcr_private:
+        description: "Is GHCR package private?"
+        required: true
+        type: choice
+        options: [ "false", "true" ]
+        default: "false"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    env:
+      GHCR_USER: ${{ secrets.GHCR_USER }}
+      GHCR_PAT: ${{ secrets.GHCR_PAT }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Ansible
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install ansible
+
+      - name: Render inventory with chosen visibility
+        run: |
+          sed -i "s/ghcr_private: .*/ghcr_private: ${{ github.event.inputs.ghcr_private || 'false' }}/" infrastructure/ansible/group_vars/all.yml || true
+
+      - name: Run deployment (local deploy on runner)
+        working-directory: infrastructure/ansible
+        run: |
+          ansible-playbook -i inventories/development.yml playbooks/deploy-app.yml
+
+      - name: Smoke test
+        run: |
+          curl -fsS http://localhost:5000/api/health

@@ -1,0 +1,116 @@
+name: Comprehensive CI with Detailed Logging - Ubuntu
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  comprehensive-ubuntu-ci:
+    name: Comprehensive Ubuntu CI Pipeline
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Display workflow information
+      run: |
+        echo "::notice title=Ubuntu Workflow::Running on Ubuntu Latest for optimal performance"
+        echo "Workflow Information:"
+        echo "  Run ID: ${{ github.run_id }}"
+        echo "  Run Number: ${{ github.run_number }}"
+        echo "  Repository: ${{ github.repository }}"
+        echo "  Branch: ${{ github.ref_name }}"
+        echo "  Commit: ${{ github.sha }}"
+        echo "  Actor: ${{ github.actor }}"
+        echo "  Event: ${{ github.event_name }}"
+        echo "  Platform: Ubuntu Latest (consistent and reliable)"
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install Node.js dependencies
+      run: |
+        echo "::group::Installing Node.js dependencies on Ubuntu"
+        npm ci
+        echo "::endgroup::"
+        echo "::notice title=Ubuntu Dependencies::Node.js packages installed successfully"
+        
+    - name: Install Python dependencies
+      run: |
+        echo "::group::Installing Python dependencies on Ubuntu"
+        pip install -r requirements.txt
+        echo "::endgroup::"
+        echo "::notice title=Ubuntu Dependencies::Python packages installed successfully"
+        
+    - name: Run Node.js tests
+      run: |
+        echo "::group::Running Node.js Tests on Ubuntu"
+        npm test
+        echo "::endgroup::"
+        
+    - name: Run Python tests
+      run: |
+        echo "::group::Running Python Tests on Ubuntu"
+        pytest -v test_python_app.py
+        echo "::endgroup::"
+        
+    - name: Generate comprehensive performance report
+      run: |
+        echo "# CI/CD Performance Report - Ubuntu Only" > performance-report.md
+        echo "" >> performance-report.md
+        echo "**Workflow Run:** ${{ github.run_number }}" >> performance-report.md
+        echo "**Date:** $(date)" >> performance-report.md
+        echo "**Branch:** ${{ github.ref_name }}" >> performance-report.md
+        echo "**Commit:** ${{ github.sha }}" >> performance-report.md
+        echo "**Platform:** Ubuntu Latest" >> performance-report.md
+        echo "" >> performance-report.md
+        echo "## Jobs Status" >> performance-report.md
+        echo "- Setup: success" >> performance-report.md
+        echo "- Node.js Tests: success" >> performance-report.md
+        echo "- Python Tests: success" >> performance-report.md
+        echo "" >> performance-report.md
+        echo "## Platform Benefits" >> performance-report.md
+        echo "- Consistent Ubuntu environment" >> performance-report.md
+        echo "- Faster execution (no cross-platform overhead)" >> performance-report.md
+        echo "- Reliable package installation" >> performance-report.md
+        echo "- Simplified debugging" >> performance-report.md
+        
+        cat performance-report.md
+        
+    - name: Upload performance report
+      uses: actions/upload-artifact@v4
+      with:
+        name: performance-report-ubuntu
+        path: performance-report.md
+        
+    - name: Generate test summary
+      run: |
+        echo "Test Summary for Ubuntu CI/CD Pipeline" > test-summary.txt
+        echo "=====================================" >> test-summary.txt
+        echo "Workflow Run: ${{ github.run_number }}" >> test-summary.txt
+        echo "Repository: ${{ github.repository }}" >> test-summary.txt
+        echo "Platform: Ubuntu Latest" >> test-summary.txt
+        echo "Jobs completed on Ubuntu successfully" >> test-summary.txt
+        echo "" >> test-summary.txt
+        echo "Performance Metrics:" >> test-summary.txt
+        echo "- All tests run on consistent Ubuntu environment" >> test-summary.txt
+        echo "- No cross-platform compatibility issues" >> test-summary.txt
+        echo "- Reliable and predictable execution" >> test-summary.txt
+        
+        ls -la test-summary.txt
+        
+    - name: Upload test summary
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-summary-ubuntu
+        path: test-summary.txt
