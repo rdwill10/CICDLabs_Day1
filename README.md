@@ -36,3 +36,21 @@ npm test
 npm run build
 ./performance-check.sh
 ```
+
+### Lab 4 — Dockerize an App and Automate Image Build and Push with GitHub Actions
+
+- Project: [lab4/flask-docker-demo](lab4/flask-docker-demo)
+- What it includes: Flask app, Dockerfile (non-root), GitHub Actions workflow to build/push to DockerHub
+
+Key files:
+
+- Dockerfile: [lab4/flask-docker-demo/Dockerfile](lab4/flask-docker-demo/Dockerfile)
+- Workflow: [lab4/flask-docker-demo/.github/workflows/docker-build-push.yml](lab4/flask-docker-demo/.github/workflows/docker-build-push.yml)
+
+Run locally:
+
+```bash
+cd lab4/flask-docker-demo
+docker build -t flask-docker-demo:latest .
+docker run -d -p 8080:5000 --name flask-app flask-docker-demo:latest
+```
