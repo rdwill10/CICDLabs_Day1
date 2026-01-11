@@ -1,6 +1,9 @@
 name: Optimized CI/CD (Small)
 
+
+
 on:
+  workflow_dispatch:
   push:
     branches: [main, develop]
     # ✅ include workflow + docs + script so pushes trigger
