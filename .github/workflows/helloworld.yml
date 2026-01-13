@@ -1,4 +1,4 @@
-name: Lab1-Hello World Ryan
+name: Lab1-Hello World
 on:
   workflow_dispatch:
 
